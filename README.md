@@ -13,7 +13,7 @@ SDK's are output into [the `./sdk` directory](./sdk) and can be used like any ot
 ```go
 package main
 
-import "github.com/tombuildsstuff/kermit/sdk/containerregistry/2022-02-01/containerregistry"
+import "github.com/jackofallops/kermit/sdk/containerregistry/2022-02-01/containerregistry"
 
 func main() {
     client := containerregistry.NewRegistriesClient("https://management.azure.com", "subscription-id")
