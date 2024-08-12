@@ -1,4 +1,4 @@
-module github.com/tombuildsstuff/kermit
+module github.com/jackofallops/kermit
 
 go 1.18
 
