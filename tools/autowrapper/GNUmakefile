@@ -18,7 +18,7 @@ run: build
 
 tools:
 	@echo "==> installing required tooling..."
-	go install golang.org/x/tools/cmd/goimports@latest
+	go install golang.org/x/tools/cmd/goimports@0.25
 	sudo npm install -g autorest
 	@echo "==> running 'npm install'..."
 	npm install
