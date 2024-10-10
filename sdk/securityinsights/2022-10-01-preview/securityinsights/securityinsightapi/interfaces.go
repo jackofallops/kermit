@@ -10,7 +10,6 @@ import (
 	"context"
 
 	"github.com/Azure/go-autorest/autorest"
-	securityinsight "github.com/tombuildsstuff/kermit/sdk/securityinsights/2022-10-01-preview/securityinsights"
 )
 
 // AlertRulesClientAPI contains the set of methods on the AlertRulesClient type.
