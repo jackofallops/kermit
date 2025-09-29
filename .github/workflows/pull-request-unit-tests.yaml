@@ -4,6 +4,10 @@ on:
   pull_request:
     types: ['opened', 'synchronize']
 
+concurrency:
+  group: 'kermit-pr-${{ github.head_ref }}'
+  cancel-in-progress: true
+
 jobs:
   test-regenerate-the-track1-sdks:
     runs-on: ubuntu-latest
