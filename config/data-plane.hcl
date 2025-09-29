@@ -44,7 +44,3 @@ data_plane "synapse" "2021-06-01-preview" {
   swagger_tag      = "package-artifacts-2021-06-01-preview"
   readme_file_path = "../../swagger/specification/synapse/data-plane/readme.md"
 }
-data_plane "search" "2025-05-01-preview" {
-  swagger_tag      = "package-2025-05-searchservice-preview"
-  readme_file_path = "../../swagger/specification/search/data-plane/Azure.Search/readme.md"
-}
