@@ -32,6 +32,10 @@ data_plane "keyvault" "7.5-preview.1" {
   swagger_tag      = "package-preview-7.5-preview.1"
   readme_file_path = "../../config/key-vault/readme.md"
 }
+data_plane "search" "2024-03-01-preview" {
+  swagger_tag      = "package-2024-03-searchservice-preview"
+  readme_file_path = "../../swagger/specification/search/data-plane/Azure.Search/readme.md"
+}
 data_plane "synapse" "2019-06-01-preview" {
   swagger_tag      = "package-vnet-2019-06-01-preview"
   readme_file_path = "../../swagger/specification/synapse/data-plane/readme.md"
