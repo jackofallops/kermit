@@ -27,7 +27,7 @@ resource_manager "datafactory" "2018-06-01" {
 
 resource_manager "iothub" "2022-04-30-preview" {
   swagger_tag = "package-preview-2022-04-30"
-  readme_file_path = "../../swagger/specification/datafactory/resource-manager/Microsoft.DataFactory/DataFactory/readme.md"
+  readme_file_path = "../../swagger/specification/iothub/resource-manager/Microsoft.Devices/IoTHub/readme.md"
 }
 
 resource_manager "securityinsights" "2022-10-01-preview" {
