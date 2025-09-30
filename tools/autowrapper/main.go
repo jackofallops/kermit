@@ -36,14 +36,18 @@ func run() error {
 	log.Printf("Generating Data Plane SDKs..")
 	for _, dataPlane := range *dataPlaneServices {
 		log.Printf("[DEBUG] Generating Data Plane Service %q / API Version %q / Swagger Tag %q / Readme %q", dataPlane.ServiceName, dataPlane.ApiVersion, dataPlane.SwaggerTag, dataPlane.ReadmeFilePath)
-		runAutoRestForService(dataPlane.ServiceName, dataPlane.ApiVersion, dataPlane.SwaggerTag, dataPlane.ReadmeFilePath, false)
+		if e := runAutoRestForService(dataPlane.ServiceName, dataPlane.ApiVersion, dataPlane.SwaggerTag, dataPlane.ReadmeFilePath, false); e != nil {
+			return e
+		}
 	}
 	log.Printf("Finished Generating Data Plane SDKs.")
 
 	log.Printf("Generating Resource Manager SDKs..")
 	for _, resourceManager := range *resourceManagerServices {
 		log.Printf("[DEBUG] Generating Resource Manager Service %q / API Version %q / Swagger Tag %q / Readme %q", resourceManager.ServiceName, resourceManager.ApiVersion, resourceManager.SwaggerTag, resourceManager.ReadmeFilePath)
-		runAutoRestForService(resourceManager.ServiceName, resourceManager.ApiVersion, resourceManager.SwaggerTag, resourceManager.ReadmeFilePath, true)
+		if e := runAutoRestForService(resourceManager.ServiceName, resourceManager.ApiVersion, resourceManager.SwaggerTag, resourceManager.ReadmeFilePath, true); e != nil {
+			return e
+		}
 	}
 	log.Printf("Finished Generating Resource Manager SDKs.")
 	return nil
