@@ -22,12 +22,12 @@ resource_manager "appplatform" "2023-05-01-preview" {
 
 resource_manager "datafactory" "2018-06-01" {
   swagger_tag = "package-2018-06"
-  readme_file_path = "../../swagger/specification/datafactory/resource-manager/Microsoft.DataFactory/DataFactory/readme.md"
+  readme_file_path = "../../swagger/specification/datafactory/resource-manager/readme.md"
 }
 
 resource_manager "iothub" "2022-04-30-preview" {
   swagger_tag = "package-preview-2022-04-30"
-  readme_file_path = "../../swagger/specification/iothub/resource-manager/Microsoft.Devices/IoTHub/readme.md"
+  readme_file_path = "../../swagger/specification/iothub/resource-manager/readme.md"
 }
 
 resource_manager "securityinsights" "2022-10-01-preview" {

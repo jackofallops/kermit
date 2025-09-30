@@ -2,15 +2,15 @@
 
 data_plane "appconfiguration" "1.0" {
   swagger_tag      = "package-1-0"
-  readme_file_path = "../../swagger/specification/appconfiguration/data-plane/AppConfiguration/readme.md"
+  readme_file_path = "../../swagger/specification/appconfiguration/data-plane/readme.md"
 }
 data_plane "attestation" "2020-10-01" {
   swagger_tag      = "package-2020-10-01"
-  readme_file_path = "../../swagger/specification/attestation/data-plane/Attestation/readme.md"
+  readme_file_path = "../../swagger/specification/attestation/data-plane/readme.md"
 }
 data_plane "attestation" "2022-08-01" {
   swagger_tag      = "package-2022-08-01"
-  readme_file_path = "../../swagger/specification/attestation/data-plane/Attestation/readme.md"
+  readme_file_path = "../../swagger/specification/attestation/data-plane/readme.md"
 }
 data_plane "batch" "2020-03.11.0" {
   swagger_tag      = "package-2020-03.11.0"
