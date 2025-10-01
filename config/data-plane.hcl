@@ -1,5 +1,9 @@
 ## NOTE: these are relative paths from `./tools/autowrapper`
 
+data_plane "search" "2024-03-01-preview" {
+  swagger_tag      = "package-2024-03-searchservice-preview"
+  readme_file_path = "../../swagger-hacks/specification/search/data-plane/Azure.Search/readme.md"
+}
 data_plane "appconfiguration" "1.0" {
   swagger_tag      = "package-1-0"
   readme_file_path = "../../swagger/specification/appconfiguration/data-plane/readme.md"
@@ -31,10 +35,6 @@ data_plane "keyvault" "7.4" {
 data_plane "keyvault" "7.5-preview.1" {
   swagger_tag      = "package-preview-7.5-preview.1"
   readme_file_path = "../../config/key-vault/readme.md"
-}
-data_plane "search" "2024-03-01-preview" {
-  swagger_tag      = "package-2024-03-searchservice-preview"
-  readme_file_path = "../../swagger-hacks/specification/search/data-plane/Azure.Search/readme.md"
 }
 data_plane "synapse" "2019-06-01-preview" {
   swagger_tag      = "package-vnet-2019-06-01-preview"
