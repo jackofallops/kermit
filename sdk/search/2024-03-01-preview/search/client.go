@@ -11,108 +11,107 @@ package search
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-    "context"
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "github.com/Azure/go-autorest/tracing"
-    "github.com/gofrs/uuid"
-    "net/http"
-)
+	"context"
+	"net/http"
 
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
+	"github.com/gofrs/uuid"
+)
 
 // BaseClient is the base client for Search.
 type BaseClient struct {
-    autorest.Client
-            Endpoint string
+	autorest.Client
+	Endpoint string
 }
 
 // New creates an instance of the BaseClient client.
-func New(endpoint string)BaseClient {
-    return NewWithoutDefaults(endpoint)
+func New(endpoint string) BaseClient {
+	return NewWithoutDefaults(endpoint)
 }
 
 // NewWithoutDefaults creates an instance of the BaseClient client.
 func NewWithoutDefaults(endpoint string) BaseClient {
-    return BaseClient{
-        Client: autorest.NewClientWithUserAgent(UserAgent()),
-                Endpoint: endpoint,
-    }
+	return BaseClient{
+		Client:   autorest.NewClientWithUserAgent(UserAgent()),
+		Endpoint: endpoint,
+	}
 }
 
-    // GetServiceStatistics gets service level statistics for a search service.
-        // Parameters:
-            // xMsClientRequestID - the tracking ID sent with the request to help with debugging.
-    func (client BaseClient) GetServiceStatistics(ctx context.Context, xMsClientRequestID *uuid.UUID) (result ServiceStatistics, err error) {
-        if tracing.IsEnabled() {
-            ctx = tracing.StartSpan(ctx, fqdn + "/BaseClient.GetServiceStatistics")
-            defer func() {
-                sc := -1
-            if result.Response.Response != nil {
-            sc = result.Response.Response.StatusCode
-            }
-                tracing.EndSpan(ctx, sc, err)
-            }()
-        }
-        req, err := client.GetServiceStatisticsPreparer(ctx, xMsClientRequestID)
-        if err != nil {
-        err = autorest.NewErrorWithError(err, "search.BaseClient", "GetServiceStatistics", nil , "Failure preparing request")
-        return
-        }
+// GetServiceStatistics gets service level statistics for a search service.
+// Parameters:
+// xMsClientRequestID - the tracking ID sent with the request to help with debugging.
+func (client BaseClient) GetServiceStatistics(ctx context.Context, xMsClientRequestID *uuid.UUID) (result ServiceStatistics, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetServiceStatistics")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.GetServiceStatisticsPreparer(ctx, xMsClientRequestID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "search.BaseClient", "GetServiceStatistics", nil, "Failure preparing request")
+		return
+	}
 
-            resp, err := client.GetServiceStatisticsSender(req)
-            if err != nil {
-            result.Response = autorest.Response{Response: resp}
-            err = autorest.NewErrorWithError(err, "search.BaseClient", "GetServiceStatistics", resp, "Failure sending request")
-            return
-            }
+	resp, err := client.GetServiceStatisticsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "search.BaseClient", "GetServiceStatistics", resp, "Failure sending request")
+		return
+	}
 
-            result, err = client.GetServiceStatisticsResponder(resp)
-            if err != nil {
-            err = autorest.NewErrorWithError(err, "search.BaseClient", "GetServiceStatistics", resp, "Failure responding to request")
-            return
-            }
+	result, err = client.GetServiceStatisticsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "search.BaseClient", "GetServiceStatistics", resp, "Failure responding to request")
+		return
+	}
 
-        return
-    }
+	return
+}
 
-        // GetServiceStatisticsPreparer prepares the GetServiceStatistics request.
-        func (client BaseClient) GetServiceStatisticsPreparer(ctx context.Context, xMsClientRequestID *uuid.UUID) (*http.Request, error) {
-            urlParameters := map[string]interface{} {
-            "endpoint": client.Endpoint,
-            }
+// GetServiceStatisticsPreparer prepares the GetServiceStatistics request.
+func (client BaseClient) GetServiceStatisticsPreparer(ctx context.Context, xMsClientRequestID *uuid.UUID) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"endpoint": client.Endpoint,
+	}
 
-                const APIVersion = "2024-03-01-Preview"
-        queryParameters := map[string]interface{} {
-        "api-version": APIVersion,
-        }
+	const APIVersion = "2024-03-01-Preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-        preparer := autorest.CreatePreparer(
-    autorest.AsGet(),
-    autorest.WithCustomBaseURL("{endpoint}", urlParameters),
-    autorest.WithPath("/servicestats"),
-    autorest.WithQueryParameters(queryParameters))
-            if xMsClientRequestID != nil {
-            preparer = autorest.DecoratePreparer(preparer,
-            autorest.WithHeader("x-ms-client-request-id",autorest.String(xMsClientRequestID)))
-            }
-        return preparer.Prepare((&http.Request{}).WithContext(ctx))
-        }
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("{endpoint}", urlParameters),
+		autorest.WithPath("/servicestats"),
+		autorest.WithQueryParameters(queryParameters))
+	if xMsClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("x-ms-client-request-id", autorest.String(xMsClientRequestID)))
+	}
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
 
-        // GetServiceStatisticsSender sends the GetServiceStatistics request. The method will close the
-        // http.Response Body if it receives an error.
-        func (client BaseClient) GetServiceStatisticsSender(req *http.Request) (*http.Response, error) {
-                    return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-                    }
+// GetServiceStatisticsSender sends the GetServiceStatistics request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) GetServiceStatisticsSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
 
-        // GetServiceStatisticsResponder handles the response to the GetServiceStatistics request. The method always
-        // closes the http.Response Body.
-        func (client BaseClient) GetServiceStatisticsResponder(resp *http.Response) (result ServiceStatistics, err error) {
-                err = autorest.Respond(
-                resp,
-                azure.WithErrorUnlessStatusCode(http.StatusOK),
-                autorest.ByUnmarshallingJSON(&result),
-                autorest.ByClosing())
-                result.Response = autorest.Response{Response: resp}
-                return
-        }
-
+// GetServiceStatisticsResponder handles the response to the GetServiceStatistics request. The method always
+// closes the http.Response Body.
+func (client BaseClient) GetServiceStatisticsResponder(resp *http.Response) (result ServiceStatistics, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}

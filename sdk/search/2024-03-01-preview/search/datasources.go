@@ -7,497 +7,494 @@ package search
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "net/http"
-    "context"
-    "github.com/Azure/go-autorest/tracing"
-    "github.com/Azure/go-autorest/autorest/validation"
-    "github.com/gofrs/uuid"
+	"context"
+	"net/http"
+
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
+	"github.com/gofrs/uuid"
 )
 
 // DataSourcesClient is the client that can be used to manage and query indexes and documents, as well as manage other
 // resources, on a search service.
 type DataSourcesClient struct {
-    BaseClient
+	BaseClient
 }
+
 // NewDataSourcesClient creates an instance of the DataSourcesClient client.
 func NewDataSourcesClient(endpoint string) DataSourcesClient {
-    return DataSourcesClient{ New(endpoint)}
+	return DataSourcesClient{New(endpoint)}
 }
 
 // Create creates a new datasource.
-    // Parameters:
-        // dataSource - the definition of the datasource to create.
-        // xMsClientRequestID - the tracking ID sent with the request to help with debugging.
+// Parameters:
+// dataSource - the definition of the datasource to create.
+// xMsClientRequestID - the tracking ID sent with the request to help with debugging.
 func (client DataSourcesClient) Create(ctx context.Context, dataSource IndexerDataSource, xMsClientRequestID *uuid.UUID) (result IndexerDataSource, err error) {
-    if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/DataSourcesClient.Create")
-        defer func() {
-            sc := -1
-        if result.Response.Response != nil {
-        sc = result.Response.Response.StatusCode
-        }
-            tracing.EndSpan(ctx, sc, err)
-        }()
-    }
-        if err := validation.Validate([]validation.Validation{
-        { TargetValue: dataSource,
-         Constraints: []validation.Constraint{	{Target: "dataSource.Name", Name: validation.Null, Rule: true, Chain: nil },
-        	{Target: "dataSource.Credentials", Name: validation.Null, Rule: true, Chain: nil },
-        	{Target: "dataSource.Container", Name: validation.Null, Rule: true ,
-        Chain: []validation.Constraint{	{Target: "dataSource.Container.Name", Name: validation.Null, Rule: true, Chain: nil },
-        }},
-        	{Target: "dataSource.EncryptionKey", Name: validation.Null, Rule: false ,
-        Chain: []validation.Constraint{	{Target: "dataSource.EncryptionKey.KeyName", Name: validation.Null, Rule: true, Chain: nil },
-        	{Target: "dataSource.EncryptionKey.KeyVersion", Name: validation.Null, Rule: true, Chain: nil },
-        	{Target: "dataSource.EncryptionKey.VaultURI", Name: validation.Null, Rule: true, Chain: nil },
-        	{Target: "dataSource.EncryptionKey.AccessCredentials", Name: validation.Null, Rule: false ,
-        Chain: []validation.Constraint{	{Target: "dataSource.EncryptionKey.AccessCredentials.ApplicationID", Name: validation.Null, Rule: true, Chain: nil },
-        }},
-        }}}}}); err != nil {
-        return result, validation.NewError("search.DataSourcesClient", "Create", err.Error())
-        }
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DataSourcesClient.Create")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: dataSource,
+			Constraints: []validation.Constraint{{Target: "dataSource.Name", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "dataSource.Credentials", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "dataSource.Container", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "dataSource.Container.Name", Name: validation.Null, Rule: true, Chain: nil}}},
+				{Target: "dataSource.EncryptionKey", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "dataSource.EncryptionKey.KeyName", Name: validation.Null, Rule: true, Chain: nil},
+						{Target: "dataSource.EncryptionKey.KeyVersion", Name: validation.Null, Rule: true, Chain: nil},
+						{Target: "dataSource.EncryptionKey.VaultURI", Name: validation.Null, Rule: true, Chain: nil},
+						{Target: "dataSource.EncryptionKey.AccessCredentials", Name: validation.Null, Rule: false,
+							Chain: []validation.Constraint{{Target: "dataSource.EncryptionKey.AccessCredentials.ApplicationID", Name: validation.Null, Rule: true, Chain: nil}}},
+					}}}}}); err != nil {
+		return result, validation.NewError("search.DataSourcesClient", "Create", err.Error())
+	}
 
-        req, err := client.CreatePreparer(ctx, dataSource, xMsClientRequestID)
-    if err != nil {
-    err = autorest.NewErrorWithError(err, "search.DataSourcesClient", "Create", nil , "Failure preparing request")
-    return
-    }
+	req, err := client.CreatePreparer(ctx, dataSource, xMsClientRequestID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "search.DataSourcesClient", "Create", nil, "Failure preparing request")
+		return
+	}
 
-        resp, err := client.CreateSender(req)
-        if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "search.DataSourcesClient", "Create", resp, "Failure sending request")
-        return
-        }
+	resp, err := client.CreateSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "search.DataSourcesClient", "Create", resp, "Failure sending request")
+		return
+	}
 
-        result, err = client.CreateResponder(resp)
-        if err != nil {
-        err = autorest.NewErrorWithError(err, "search.DataSourcesClient", "Create", resp, "Failure responding to request")
-        return
-        }
+	result, err = client.CreateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "search.DataSourcesClient", "Create", resp, "Failure responding to request")
+		return
+	}
 
-    return
+	return
 }
 
-    // CreatePreparer prepares the Create request.
-    func (client DataSourcesClient) CreatePreparer(ctx context.Context, dataSource IndexerDataSource, xMsClientRequestID *uuid.UUID) (*http.Request, error) {
-        urlParameters := map[string]interface{} {
-        "endpoint": client.Endpoint,
-        }
+// CreatePreparer prepares the Create request.
+func (client DataSourcesClient) CreatePreparer(ctx context.Context, dataSource IndexerDataSource, xMsClientRequestID *uuid.UUID) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"endpoint": client.Endpoint,
+	}
 
-            const APIVersion = "2024-03-01-Preview"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2024-03-01-Preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-autorest.AsContentType("application/json; charset=utf-8"),
-autorest.AsPost(),
-autorest.WithCustomBaseURL("{endpoint}", urlParameters),
-autorest.WithPath("/datasources"),
-autorest.WithJSON(dataSource),
-autorest.WithQueryParameters(queryParameters))
-        if xMsClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-        autorest.WithHeader("x-ms-client-request-id",autorest.String(xMsClientRequestID)))
-        }
-    return preparer.Prepare((&http.Request{}).WithContext(ctx))
-    }
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithCustomBaseURL("{endpoint}", urlParameters),
+		autorest.WithPath("/datasources"),
+		autorest.WithJSON(dataSource),
+		autorest.WithQueryParameters(queryParameters))
+	if xMsClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("x-ms-client-request-id", autorest.String(xMsClientRequestID)))
+	}
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
 
-    // CreateSender sends the Create request. The method will close the
-    // http.Response Body if it receives an error.
-    func (client DataSourcesClient) CreateSender(req *http.Request) (*http.Response, error) {
-                return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-                }
+// CreateSender sends the Create request. The method will close the
+// http.Response Body if it receives an error.
+func (client DataSourcesClient) CreateSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
 
-    // CreateResponder handles the response to the Create request. The method always
-    // closes the http.Response Body.
-    func (client DataSourcesClient) CreateResponder(resp *http.Response) (result IndexerDataSource, err error) {
-            err = autorest.Respond(
-            resp,
-            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusCreated),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-            result.Response = autorest.Response{Response: resp}
-            return
-    }
+// CreateResponder handles the response to the Create request. The method always
+// closes the http.Response Body.
+func (client DataSourcesClient) CreateResponder(resp *http.Response) (result IndexerDataSource, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
 
 // CreateOrUpdate creates a new datasource or updates a datasource if it already exists.
-    // Parameters:
-        // dataSourceName - the name of the datasource to create or update.
-        // dataSource - the definition of the datasource to create or update.
-        // xMsClientRequestID - the tracking ID sent with the request to help with debugging.
-        // ifMatch - defines the If-Match condition. The operation will be performed only if the ETag on the server
-        // matches this value.
-        // ifNoneMatch - defines the If-None-Match condition. The operation will be performed only if the ETag on the
-        // server does not match this value.
-        // skipIndexerResetRequirementForCache - ignores cache reset requirements.
+// Parameters:
+// dataSourceName - the name of the datasource to create or update.
+// dataSource - the definition of the datasource to create or update.
+// xMsClientRequestID - the tracking ID sent with the request to help with debugging.
+// ifMatch - defines the If-Match condition. The operation will be performed only if the ETag on the server
+// matches this value.
+// ifNoneMatch - defines the If-None-Match condition. The operation will be performed only if the ETag on the
+// server does not match this value.
+// skipIndexerResetRequirementForCache - ignores cache reset requirements.
 func (client DataSourcesClient) CreateOrUpdate(ctx context.Context, dataSourceName string, dataSource IndexerDataSource, xMsClientRequestID *uuid.UUID, ifMatch string, ifNoneMatch string, skipIndexerResetRequirementForCache *bool) (result IndexerDataSource, err error) {
-    if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/DataSourcesClient.CreateOrUpdate")
-        defer func() {
-            sc := -1
-        if result.Response.Response != nil {
-        sc = result.Response.Response.StatusCode
-        }
-            tracing.EndSpan(ctx, sc, err)
-        }()
-    }
-        if err := validation.Validate([]validation.Validation{
-        { TargetValue: dataSource,
-         Constraints: []validation.Constraint{	{Target: "dataSource.Name", Name: validation.Null, Rule: true, Chain: nil },
-        	{Target: "dataSource.Credentials", Name: validation.Null, Rule: true, Chain: nil },
-        	{Target: "dataSource.Container", Name: validation.Null, Rule: true ,
-        Chain: []validation.Constraint{	{Target: "dataSource.Container.Name", Name: validation.Null, Rule: true, Chain: nil },
-        }},
-        	{Target: "dataSource.EncryptionKey", Name: validation.Null, Rule: false ,
-        Chain: []validation.Constraint{	{Target: "dataSource.EncryptionKey.KeyName", Name: validation.Null, Rule: true, Chain: nil },
-        	{Target: "dataSource.EncryptionKey.KeyVersion", Name: validation.Null, Rule: true, Chain: nil },
-        	{Target: "dataSource.EncryptionKey.VaultURI", Name: validation.Null, Rule: true, Chain: nil },
-        	{Target: "dataSource.EncryptionKey.AccessCredentials", Name: validation.Null, Rule: false ,
-        Chain: []validation.Constraint{	{Target: "dataSource.EncryptionKey.AccessCredentials.ApplicationID", Name: validation.Null, Rule: true, Chain: nil },
-        }},
-        }}}}}); err != nil {
-        return result, validation.NewError("search.DataSourcesClient", "CreateOrUpdate", err.Error())
-        }
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DataSourcesClient.CreateOrUpdate")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: dataSource,
+			Constraints: []validation.Constraint{{Target: "dataSource.Name", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "dataSource.Credentials", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "dataSource.Container", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "dataSource.Container.Name", Name: validation.Null, Rule: true, Chain: nil}}},
+				{Target: "dataSource.EncryptionKey", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "dataSource.EncryptionKey.KeyName", Name: validation.Null, Rule: true, Chain: nil},
+						{Target: "dataSource.EncryptionKey.KeyVersion", Name: validation.Null, Rule: true, Chain: nil},
+						{Target: "dataSource.EncryptionKey.VaultURI", Name: validation.Null, Rule: true, Chain: nil},
+						{Target: "dataSource.EncryptionKey.AccessCredentials", Name: validation.Null, Rule: false,
+							Chain: []validation.Constraint{{Target: "dataSource.EncryptionKey.AccessCredentials.ApplicationID", Name: validation.Null, Rule: true, Chain: nil}}},
+					}}}}}); err != nil {
+		return result, validation.NewError("search.DataSourcesClient", "CreateOrUpdate", err.Error())
+	}
 
-        req, err := client.CreateOrUpdatePreparer(ctx, dataSourceName, dataSource, xMsClientRequestID, ifMatch, ifNoneMatch, skipIndexerResetRequirementForCache)
-    if err != nil {
-    err = autorest.NewErrorWithError(err, "search.DataSourcesClient", "CreateOrUpdate", nil , "Failure preparing request")
-    return
-    }
+	req, err := client.CreateOrUpdatePreparer(ctx, dataSourceName, dataSource, xMsClientRequestID, ifMatch, ifNoneMatch, skipIndexerResetRequirementForCache)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "search.DataSourcesClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
+	}
 
-        resp, err := client.CreateOrUpdateSender(req)
-        if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "search.DataSourcesClient", "CreateOrUpdate", resp, "Failure sending request")
-        return
-        }
+	resp, err := client.CreateOrUpdateSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "search.DataSourcesClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
+	}
 
-        result, err = client.CreateOrUpdateResponder(resp)
-        if err != nil {
-        err = autorest.NewErrorWithError(err, "search.DataSourcesClient", "CreateOrUpdate", resp, "Failure responding to request")
-        return
-        }
+	result, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "search.DataSourcesClient", "CreateOrUpdate", resp, "Failure responding to request")
+		return
+	}
 
-    return
+	return
 }
 
-    // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-    func (client DataSourcesClient) CreateOrUpdatePreparer(ctx context.Context, dataSourceName string, dataSource IndexerDataSource, xMsClientRequestID *uuid.UUID, ifMatch string, ifNoneMatch string, skipIndexerResetRequirementForCache *bool) (*http.Request, error) {
-        urlParameters := map[string]interface{} {
-        "endpoint": client.Endpoint,
-        }
+// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
+func (client DataSourcesClient) CreateOrUpdatePreparer(ctx context.Context, dataSourceName string, dataSource IndexerDataSource, xMsClientRequestID *uuid.UUID, ifMatch string, ifNoneMatch string, skipIndexerResetRequirementForCache *bool) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"endpoint": client.Endpoint,
+	}
 
-        pathParameters := map[string]interface{} {
-        "dataSourceName": autorest.Encode("path",dataSourceName),
-        }
+	pathParameters := map[string]interface{}{
+		"dataSourceName": autorest.Encode("path", dataSourceName),
+	}
 
-            const APIVersion = "2024-03-01-Preview"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-        if skipIndexerResetRequirementForCache != nil {
-        queryParameters["ignoreResetRequirements"] = autorest.Encode("query",*skipIndexerResetRequirementForCache)
-        }
+	const APIVersion = "2024-03-01-Preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if skipIndexerResetRequirementForCache != nil {
+		queryParameters["ignoreResetRequirements"] = autorest.Encode("query", *skipIndexerResetRequirementForCache)
+	}
 
-    preparer := autorest.CreatePreparer(
-autorest.AsContentType("application/json; charset=utf-8"),
-autorest.AsPut(),
-autorest.WithCustomBaseURL("{endpoint}", urlParameters),
-autorest.WithPathParameters("/datasources('{dataSourceName}')",pathParameters),
-autorest.WithJSON(dataSource),
-autorest.WithQueryParameters(queryParameters),
-autorest.WithHeader("Prefer", "return=representation"))
-        if xMsClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-        autorest.WithHeader("x-ms-client-request-id",autorest.String(xMsClientRequestID)))
-        }
-        if len(ifMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-        autorest.WithHeader("If-Match",autorest.String(ifMatch)))
-        }
-        if len(ifNoneMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-        autorest.WithHeader("If-None-Match",autorest.String(ifNoneMatch)))
-        }
-    return preparer.Prepare((&http.Request{}).WithContext(ctx))
-    }
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPut(),
+		autorest.WithCustomBaseURL("{endpoint}", urlParameters),
+		autorest.WithPathParameters("/datasources('{dataSourceName}')", pathParameters),
+		autorest.WithJSON(dataSource),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Prefer", "return=representation"))
+	if xMsClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("x-ms-client-request-id", autorest.String(xMsClientRequestID)))
+	}
+	if len(ifMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Match", autorest.String(ifMatch)))
+	}
+	if len(ifNoneMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-None-Match", autorest.String(ifNoneMatch)))
+	}
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
 
-    // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
-    // http.Response Body if it receives an error.
-    func (client DataSourcesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-                return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-                }
+// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
+// http.Response Body if it receives an error.
+func (client DataSourcesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
 
-    // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
-    // closes the http.Response Body.
-    func (client DataSourcesClient) CreateOrUpdateResponder(resp *http.Response) (result IndexerDataSource, err error) {
-            err = autorest.Respond(
-            resp,
-            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusCreated),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-            result.Response = autorest.Response{Response: resp}
-            return
-    }
+// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
+// closes the http.Response Body.
+func (client DataSourcesClient) CreateOrUpdateResponder(resp *http.Response) (result IndexerDataSource, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
 
 // Delete deletes a datasource.
-    // Parameters:
-        // dataSourceName - the name of the datasource to delete.
-        // xMsClientRequestID - the tracking ID sent with the request to help with debugging.
-        // ifMatch - defines the If-Match condition. The operation will be performed only if the ETag on the server
-        // matches this value.
-        // ifNoneMatch - defines the If-None-Match condition. The operation will be performed only if the ETag on the
-        // server does not match this value.
+// Parameters:
+// dataSourceName - the name of the datasource to delete.
+// xMsClientRequestID - the tracking ID sent with the request to help with debugging.
+// ifMatch - defines the If-Match condition. The operation will be performed only if the ETag on the server
+// matches this value.
+// ifNoneMatch - defines the If-None-Match condition. The operation will be performed only if the ETag on the
+// server does not match this value.
 func (client DataSourcesClient) Delete(ctx context.Context, dataSourceName string, xMsClientRequestID *uuid.UUID, ifMatch string, ifNoneMatch string) (result autorest.Response, err error) {
-    if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/DataSourcesClient.Delete")
-        defer func() {
-            sc := -1
-        if result.Response != nil {
-        sc = result.Response.StatusCode
-        }
-            tracing.EndSpan(ctx, sc, err)
-        }()
-    }
-    req, err := client.DeletePreparer(ctx, dataSourceName, xMsClientRequestID, ifMatch, ifNoneMatch)
-    if err != nil {
-    err = autorest.NewErrorWithError(err, "search.DataSourcesClient", "Delete", nil , "Failure preparing request")
-    return
-    }
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DataSourcesClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.DeletePreparer(ctx, dataSourceName, xMsClientRequestID, ifMatch, ifNoneMatch)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "search.DataSourcesClient", "Delete", nil, "Failure preparing request")
+		return
+	}
 
-        resp, err := client.DeleteSender(req)
-        if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "search.DataSourcesClient", "Delete", resp, "Failure sending request")
-        return
-        }
+	resp, err := client.DeleteSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "search.DataSourcesClient", "Delete", resp, "Failure sending request")
+		return
+	}
 
-        result, err = client.DeleteResponder(resp)
-        if err != nil {
-        err = autorest.NewErrorWithError(err, "search.DataSourcesClient", "Delete", resp, "Failure responding to request")
-        return
-        }
+	result, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "search.DataSourcesClient", "Delete", resp, "Failure responding to request")
+		return
+	}
 
-    return
+	return
 }
 
-    // DeletePreparer prepares the Delete request.
-    func (client DataSourcesClient) DeletePreparer(ctx context.Context, dataSourceName string, xMsClientRequestID *uuid.UUID, ifMatch string, ifNoneMatch string) (*http.Request, error) {
-        urlParameters := map[string]interface{} {
-        "endpoint": client.Endpoint,
-        }
+// DeletePreparer prepares the Delete request.
+func (client DataSourcesClient) DeletePreparer(ctx context.Context, dataSourceName string, xMsClientRequestID *uuid.UUID, ifMatch string, ifNoneMatch string) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"endpoint": client.Endpoint,
+	}
 
-        pathParameters := map[string]interface{} {
-        "dataSourceName": autorest.Encode("path",dataSourceName),
-        }
+	pathParameters := map[string]interface{}{
+		"dataSourceName": autorest.Encode("path", dataSourceName),
+	}
 
-            const APIVersion = "2024-03-01-Preview"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2024-03-01-Preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-autorest.AsDelete(),
-autorest.WithCustomBaseURL("{endpoint}", urlParameters),
-autorest.WithPathParameters("/datasources('{dataSourceName}')",pathParameters),
-autorest.WithQueryParameters(queryParameters))
-        if xMsClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-        autorest.WithHeader("x-ms-client-request-id",autorest.String(xMsClientRequestID)))
-        }
-        if len(ifMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-        autorest.WithHeader("If-Match",autorest.String(ifMatch)))
-        }
-        if len(ifNoneMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-        autorest.WithHeader("If-None-Match",autorest.String(ifNoneMatch)))
-        }
-    return preparer.Prepare((&http.Request{}).WithContext(ctx))
-    }
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithCustomBaseURL("{endpoint}", urlParameters),
+		autorest.WithPathParameters("/datasources('{dataSourceName}')", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if xMsClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("x-ms-client-request-id", autorest.String(xMsClientRequestID)))
+	}
+	if len(ifMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Match", autorest.String(ifMatch)))
+	}
+	if len(ifNoneMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-None-Match", autorest.String(ifNoneMatch)))
+	}
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
 
-    // DeleteSender sends the Delete request. The method will close the
-    // http.Response Body if it receives an error.
-    func (client DataSourcesClient) DeleteSender(req *http.Request) (*http.Response, error) {
-                return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-                }
+// DeleteSender sends the Delete request. The method will close the
+// http.Response Body if it receives an error.
+func (client DataSourcesClient) DeleteSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
 
-    // DeleteResponder handles the response to the Delete request. The method always
-    // closes the http.Response Body.
-    func (client DataSourcesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-            err = autorest.Respond(
-            resp,
-            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusNoContent,http.StatusNotFound),
-            autorest.ByClosing())
-            result.Response = resp
-            return
-    }
+// DeleteResponder handles the response to the Delete request. The method always
+// closes the http.Response Body.
+func (client DataSourcesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusNotFound),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
 
 // Get retrieves a datasource definition.
-    // Parameters:
-        // dataSourceName - the name of the datasource to retrieve.
-        // xMsClientRequestID - the tracking ID sent with the request to help with debugging.
+// Parameters:
+// dataSourceName - the name of the datasource to retrieve.
+// xMsClientRequestID - the tracking ID sent with the request to help with debugging.
 func (client DataSourcesClient) Get(ctx context.Context, dataSourceName string, xMsClientRequestID *uuid.UUID) (result IndexerDataSource, err error) {
-    if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/DataSourcesClient.Get")
-        defer func() {
-            sc := -1
-        if result.Response.Response != nil {
-        sc = result.Response.Response.StatusCode
-        }
-            tracing.EndSpan(ctx, sc, err)
-        }()
-    }
-    req, err := client.GetPreparer(ctx, dataSourceName, xMsClientRequestID)
-    if err != nil {
-    err = autorest.NewErrorWithError(err, "search.DataSourcesClient", "Get", nil , "Failure preparing request")
-    return
-    }
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DataSourcesClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.GetPreparer(ctx, dataSourceName, xMsClientRequestID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "search.DataSourcesClient", "Get", nil, "Failure preparing request")
+		return
+	}
 
-        resp, err := client.GetSender(req)
-        if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "search.DataSourcesClient", "Get", resp, "Failure sending request")
-        return
-        }
+	resp, err := client.GetSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "search.DataSourcesClient", "Get", resp, "Failure sending request")
+		return
+	}
 
-        result, err = client.GetResponder(resp)
-        if err != nil {
-        err = autorest.NewErrorWithError(err, "search.DataSourcesClient", "Get", resp, "Failure responding to request")
-        return
-        }
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "search.DataSourcesClient", "Get", resp, "Failure responding to request")
+		return
+	}
 
-    return
+	return
 }
 
-    // GetPreparer prepares the Get request.
-    func (client DataSourcesClient) GetPreparer(ctx context.Context, dataSourceName string, xMsClientRequestID *uuid.UUID) (*http.Request, error) {
-        urlParameters := map[string]interface{} {
-        "endpoint": client.Endpoint,
-        }
+// GetPreparer prepares the Get request.
+func (client DataSourcesClient) GetPreparer(ctx context.Context, dataSourceName string, xMsClientRequestID *uuid.UUID) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"endpoint": client.Endpoint,
+	}
 
-        pathParameters := map[string]interface{} {
-        "dataSourceName": autorest.Encode("path",dataSourceName),
-        }
+	pathParameters := map[string]interface{}{
+		"dataSourceName": autorest.Encode("path", dataSourceName),
+	}
 
-            const APIVersion = "2024-03-01-Preview"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2024-03-01-Preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-autorest.AsGet(),
-autorest.WithCustomBaseURL("{endpoint}", urlParameters),
-autorest.WithPathParameters("/datasources('{dataSourceName}')",pathParameters),
-autorest.WithQueryParameters(queryParameters))
-        if xMsClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-        autorest.WithHeader("x-ms-client-request-id",autorest.String(xMsClientRequestID)))
-        }
-    return preparer.Prepare((&http.Request{}).WithContext(ctx))
-    }
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("{endpoint}", urlParameters),
+		autorest.WithPathParameters("/datasources('{dataSourceName}')", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if xMsClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("x-ms-client-request-id", autorest.String(xMsClientRequestID)))
+	}
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
 
-    // GetSender sends the Get request. The method will close the
-    // http.Response Body if it receives an error.
-    func (client DataSourcesClient) GetSender(req *http.Request) (*http.Response, error) {
-                return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-                }
+// GetSender sends the Get request. The method will close the
+// http.Response Body if it receives an error.
+func (client DataSourcesClient) GetSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
 
-    // GetResponder handles the response to the Get request. The method always
-    // closes the http.Response Body.
-    func (client DataSourcesClient) GetResponder(resp *http.Response) (result IndexerDataSource, err error) {
-            err = autorest.Respond(
-            resp,
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-            result.Response = autorest.Response{Response: resp}
-            return
-    }
+// GetResponder handles the response to the Get request. The method always
+// closes the http.Response Body.
+func (client DataSourcesClient) GetResponder(resp *http.Response) (result IndexerDataSource, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
 
 // List lists all datasources available for a search service.
-    // Parameters:
-        // selectParameter - selects which top-level properties of the data sources to retrieve. Specified as a
-        // comma-separated list of JSON property names, or '*' for all properties. The default is all properties.
-        // xMsClientRequestID - the tracking ID sent with the request to help with debugging.
+// Parameters:
+// selectParameter - selects which top-level properties of the data sources to retrieve. Specified as a
+// comma-separated list of JSON property names, or '*' for all properties. The default is all properties.
+// xMsClientRequestID - the tracking ID sent with the request to help with debugging.
 func (client DataSourcesClient) List(ctx context.Context, selectParameter string, xMsClientRequestID *uuid.UUID) (result ListDataSourcesResult, err error) {
-    if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/DataSourcesClient.List")
-        defer func() {
-            sc := -1
-        if result.Response.Response != nil {
-        sc = result.Response.Response.StatusCode
-        }
-            tracing.EndSpan(ctx, sc, err)
-        }()
-    }
-    req, err := client.ListPreparer(ctx, selectParameter, xMsClientRequestID)
-    if err != nil {
-    err = autorest.NewErrorWithError(err, "search.DataSourcesClient", "List", nil , "Failure preparing request")
-    return
-    }
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DataSourcesClient.List")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.ListPreparer(ctx, selectParameter, xMsClientRequestID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "search.DataSourcesClient", "List", nil, "Failure preparing request")
+		return
+	}
 
-        resp, err := client.ListSender(req)
-        if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "search.DataSourcesClient", "List", resp, "Failure sending request")
-        return
-        }
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "search.DataSourcesClient", "List", resp, "Failure sending request")
+		return
+	}
 
-        result, err = client.ListResponder(resp)
-        if err != nil {
-        err = autorest.NewErrorWithError(err, "search.DataSourcesClient", "List", resp, "Failure responding to request")
-        return
-        }
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "search.DataSourcesClient", "List", resp, "Failure responding to request")
+		return
+	}
 
-    return
+	return
 }
 
-    // ListPreparer prepares the List request.
-    func (client DataSourcesClient) ListPreparer(ctx context.Context, selectParameter string, xMsClientRequestID *uuid.UUID) (*http.Request, error) {
-        urlParameters := map[string]interface{} {
-        "endpoint": client.Endpoint,
-        }
+// ListPreparer prepares the List request.
+func (client DataSourcesClient) ListPreparer(ctx context.Context, selectParameter string, xMsClientRequestID *uuid.UUID) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"endpoint": client.Endpoint,
+	}
 
-            const APIVersion = "2024-03-01-Preview"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-        if len(selectParameter) > 0 {
-        queryParameters["$select"] = autorest.Encode("query",selectParameter)
-        }
+	const APIVersion = "2024-03-01-Preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(selectParameter) > 0 {
+		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	}
 
-    preparer := autorest.CreatePreparer(
-autorest.AsGet(),
-autorest.WithCustomBaseURL("{endpoint}", urlParameters),
-autorest.WithPath("/datasources"),
-autorest.WithQueryParameters(queryParameters))
-        if xMsClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-        autorest.WithHeader("x-ms-client-request-id",autorest.String(xMsClientRequestID)))
-        }
-    return preparer.Prepare((&http.Request{}).WithContext(ctx))
-    }
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("{endpoint}", urlParameters),
+		autorest.WithPath("/datasources"),
+		autorest.WithQueryParameters(queryParameters))
+	if xMsClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("x-ms-client-request-id", autorest.String(xMsClientRequestID)))
+	}
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
 
-    // ListSender sends the List request. The method will close the
-    // http.Response Body if it receives an error.
-    func (client DataSourcesClient) ListSender(req *http.Request) (*http.Response, error) {
-                return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-                }
+// ListSender sends the List request. The method will close the
+// http.Response Body if it receives an error.
+func (client DataSourcesClient) ListSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
 
-    // ListResponder handles the response to the List request. The method always
-    // closes the http.Response Body.
-    func (client DataSourcesClient) ListResponder(resp *http.Response) (result ListDataSourcesResult, err error) {
-            err = autorest.Respond(
-            resp,
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-            result.Response = autorest.Response{Response: resp}
-            return
-    }
-
+// ListResponder handles the response to the List request. The method always
+// closes the http.Response Body.
+func (client DataSourcesClient) ListResponder(resp *http.Response) (result ListDataSourcesResult, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
