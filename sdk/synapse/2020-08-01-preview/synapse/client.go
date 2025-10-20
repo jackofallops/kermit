@@ -1,6 +1,4 @@
 // Package synapse implements the Azure ARM Synapse service API version 2020-08-01-preview.
-//
-//
 package synapse
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -10,26 +8,24 @@ package synapse
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 )
-
 
 // BaseClient is the base client for Synapse.
 type BaseClient struct {
-    autorest.Client
-            Endpoint string
+	autorest.Client
+	Endpoint string
 }
 
 // New creates an instance of the BaseClient client.
-func New(endpoint string)BaseClient {
-    return NewWithoutDefaults(endpoint)
+func New(endpoint string) BaseClient {
+	return NewWithoutDefaults(endpoint)
 }
 
 // NewWithoutDefaults creates an instance of the BaseClient client.
 func NewWithoutDefaults(endpoint string) BaseClient {
-    return BaseClient{
-        Client: autorest.NewClientWithUserAgent(UserAgent()),
-                Endpoint: endpoint,
-    }
+	return BaseClient{
+		Client:   autorest.NewClientWithUserAgent(UserAgent()),
+		Endpoint: endpoint,
+	}
 }
-
