@@ -1,9 +1,5 @@
 ## NOTE: these are relative paths from `./tools/autowrapper`
 
-data_plane "search" "2024-03-01-preview" {
-  swagger_tag      = "package-2024-03-searchservice-preview"
-  readme_file_path = "../../swagger-hacks/specification/search/data-plane/Azure.Search/readme.md"
-}
 data_plane "appconfiguration" "1.0" {
   swagger_tag      = "package-1-0"
   readme_file_path = "../../swagger/specification/appconfiguration/data-plane/readme.md"
